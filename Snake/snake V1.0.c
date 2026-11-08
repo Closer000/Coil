@@ -12,10 +12,10 @@ int main()
 	UnloadImage(Icon);
 	SetTargetFPS(60);
 
-	int body_x[2500], body_y[2500];                       //定义数组body_x,body_y作为计算蛇身位置时的临时变量
+	int body_x[2500], body_y[2500];         //定义数组body_x,body_y作为计算蛇身位置时的临时变量
 	int body_length = 1;					//蛇身长度
 	int oldest = 0;							//最旧下标
-	int x, y;									//定义x,y作为计算位置的临时变量
+	int x, y;								//定义x,y作为计算位置的临时变量
 	double dt;								//定义dt储存上一帧耗
 	double left = 0;						//定义left储存消耗的时间
 	int r = 20;
