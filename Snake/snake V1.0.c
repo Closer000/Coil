@@ -19,6 +19,7 @@ struct Game
 	int game;								//游戏状态判定变量
 	int gridnum_x, gridnum_y;				//换算为格子坐标后的最大索引
 	int gridLength;							//格子边长
+	int score;								//得分
 }G;
 
 void Restart(struct Game *p);
@@ -38,6 +39,8 @@ int main()
 	const char* win = "Win !";
 	int text_x, text_y;						//文本位置
 	int text_w;								//文本宽度
+	double step = 0.10;						//步间隔
+	int target = 20;						//胜利条件
 	Color test = { 82,82,82,255 };			//网格颜色（测试用）
 	int add;								//记录追加位置
 	srand((unsigned int)time(0));
@@ -73,7 +76,7 @@ int main()
 			}
 
 			G.dt = GetFrameTime();											 //获取时间的帧改变量
-			if (G.dt >= 0.20)													 //钳制dt限制每帧位移
+			if (G.dt >= 0.20)												 //钳制dt限制每帧位移
 			{
 				G.dt = 0.20;
 			}
@@ -112,7 +115,7 @@ int main()
 			G.left += G.dt;
 			for (int i = 0; i < 2; i++)         //移动
 			{
-				if (G.left >= 0.20)
+				if (G.left >= step)
 				{
 					next_x = G.x + G.dx;
 					next_y = G.y + G.dy;
@@ -133,7 +136,9 @@ int main()
 							G.body_length--;
 						}
 						else {
-							if (!Food(&G))
+							Food(&G);
+							G.score++;
+							if (G.score >= target)
 							{
 								G.game = 2;
 							}
@@ -152,7 +157,7 @@ int main()
 						G.game = -1;
 						break;
 					}
-					G.left = G.left - 0.20;
+					G.left = G.left - step;
 				}
 			}
 
@@ -161,6 +166,8 @@ int main()
 				DrawRectangle((int)(G.body_x[(G.oldest + j) % 2500] * G.gridLength), (int)(G.body_y[(G.oldest + j) % 2500] * G.gridLength), G.gridLength, G.gridLength, WHITE);
 			}
 			DrawCircle(G.food_x * G.gridLength + G.gridLength / 2, G.food_y * G.gridLength + G.gridLength / 2, (float)(G.gridLength / 5), YELLOW);//绘制食物
+			
+			DrawText(TextFormat("Score: %d / %d", G.score, target),10,10,30,YELLOW);				//显示分数
 			break;
 		case -1:														//失败情况
 			text_w = MeasureText(gameover, 100);
@@ -201,10 +208,10 @@ int main()
 
 	return 0;
 }
-
+ 
 void Restart(struct Game *p)
 {
-	p->gridLength = 40;
+	p->gridLength = 20;
 	p->gridnum_x = GetScreenWidth() / p->gridLength - 1;
 	p->gridnum_y = GetScreenHeight() / p->gridLength - 1;
 
@@ -232,6 +239,8 @@ void Restart(struct Game *p)
 	Food(p);
 
 	p->game = 0;
+
+	p->score = 0;
 
 }
 
