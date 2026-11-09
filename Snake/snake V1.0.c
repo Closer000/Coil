@@ -4,6 +4,25 @@
 #include<stdlib.h>
 #include<time.h>
 
+struct Game
+{
+	int x, y;								//定义x,y作为计算位置的临时变量
+	double left;							//定义left储存消耗的时间
+	double dt;								//定义dt储存上一帧耗时
+	int dx, dy;								//生效移动方向及移动量
+	int pre_dx, pre_dy;						//下一移动方向及移动量
+	int last_dx, last_dy;					//上一移动方向及移动量
+	int body_x[2500], body_y[2500];         //定义数组body_x,body_y作为计算蛇身位置时的临时变量
+	int body_length;						//蛇身长度
+	int oldest;								//最旧下标
+	int food_x, food_y;						//食物的位置
+	int game;								//游戏状态判定变量
+	int gridnum_x, gridnum_y;				//换算为格子坐标后的最大索引
+	int gridLength;							//格子边长
+}G;
+
+void Restart(struct Game *p);
+int Food(struct Game *p);
 int main()
 {
 	InitWindow(1000, 1000, "snake");
@@ -12,20 +31,7 @@ int main()
 	UnloadImage(Icon);
 	SetTargetFPS(60);
 
-	int body_x[2500], body_y[2500];         //定义数组body_x,body_y作为计算蛇身位置时的临时变量
-	int body_length = 1;					//蛇身长度
-	int oldest = 0;							//最旧下标
-	int x, y;								//定义x,y作为计算位置的临时变量
-	double dt;								//定义dt储存上一帧耗
-	double left = 0;						//定义left储存消耗的时间
-	int r = 20;
-	int gridnum_x, gridnum_y;				//换算为格子坐标后的最大索引
-	int gridLength = (int)(r);				//格子边长
-	int dx = 1, dy = 0;						//生效移动方向及移动量
-	int pre_dx = 1, pre_dy = 0;				//下一移动方向及移动量
-	int last_dx = 0, last_dy = 0;			//上一移动方向及移动量
-	int next_x, next_y;						//目标位置
-	int game = 0;							//游戏状态判定变量
+	int next_x, next_y;						//目标位置								
 	const char* gameover = "Game Over!";	//所需文本
 	const char* start = "Press Any Key to Start";
 	const char* rest = "Press R to Restart";
@@ -34,41 +40,19 @@ int main()
 	int text_w;								//文本宽度
 	Color test = { 82,82,82,255 };			//网格颜色（测试用）
 	int add;								//记录追加位置
-	int food_x, food_y;						//食物的位置
 	srand((unsigned int)time(0));
 
-	x = 24;									//初始位置居中
-	y = 24;
-
-	for (int k = 0; k < body_length; k++)
-	{
-		body_x[k] = x - (body_length - 1 - k) * dx;
-		body_y[k] = y - (body_length - 1 - k) * dy;
-	}
-
-	next_x = x;								//初始化目标位置
-	next_y = y;
-
-	gridnum_x = (int)floor(GetScreenWidth() / gridLength) - 1;
-	gridnum_y = (int)floor(GetScreenHeight() / gridLength) - 1;      //像素坐标换算为格子坐标
-
-	food_x = rand() % (gridnum_x + 1);							//生成初始食物位置
-	food_y = rand() % (gridnum_y + 1);
-	while (food_x == x && food_y == y)
-	{
-		food_x = rand() % (gridnum_x + 1);
-		food_y = rand() % (gridnum_y + 1);
-	}
-
+	Restart(&G);
+	
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(BLACK);
 
-		pre_dx = dx;
-		pre_dy = dy;
+		G.pre_dx = G.dx;
+		G.pre_dy = G.dy;
 
-		switch (game)
+		switch (G.game)
 		{
 		case 0:
 			text_w = MeasureText(start, 50);
@@ -77,126 +61,108 @@ int main()
 			DrawText(start, text_x, text_y, 50, WHITE);
 			if (GetKeyPressed())
 			{
-				game = 1;
+				G.game = 1;
 			}
 			break;
 		case 1:
 
-			for (int i = 0;i <= gridnum_x + 1; i++)		//绘制测试用网格
+			for (int i = 0;i <= G.gridnum_x + 1; i++)		//绘制测试用网格
 			{
-				DrawLine(i * gridLength, 0, i * gridLength, GetScreenHeight(), test);
-				DrawLine(0, i * gridLength, GetScreenWidth(), i * gridLength, test);
+				DrawLine(i * G.gridLength, 0, i * G.gridLength, GetScreenHeight(), test);
+				DrawLine(0, i * G.gridLength, GetScreenWidth(), i * G.gridLength, test);
 			}
 
-			dt = GetFrameTime();											 //获取时间的帧改变量
-			if (dt >= 0.20)													 //钳制dt限制每帧位移
+			G.dt = GetFrameTime();											 //获取时间的帧改变量
+			if (G.dt >= 0.20)													 //钳制dt限制每帧位移
 			{
-				dt = 0.20;
+				G.dt = 0.20;
 			}
-			else if (dt <= 0)
+			else if (G.dt <= 0)
 			{
-				dt = 0;
+				G.dt = 0;
 			}
 
 			if (IsKeyDown(KEY_W))
 			{
-				pre_dx = 0;
-				pre_dy = -1;
+				G.pre_dx = 0;
+				G.pre_dy = -1;
 			}
 			else if (IsKeyDown(KEY_S))
 			{
-				pre_dx = 0;				//判定移动方向：(1,0)为向右一格，(-1,0)为向左一格，(0,-1)为向上一格，(0,1)向下一格
-				pre_dy = 1;
+				G.pre_dx = 0;				//判定移动方向：(1,0)为向右一格，(-1,0)为向左一格，(0,-1)为向上一格，(0,1)向下一格
+				G.pre_dy = 1;
 			}
 			else if (IsKeyDown(KEY_A))
 			{
-				pre_dx = -1;
-				pre_dy = 0;
+				G.pre_dx = -1;
+				G.pre_dy = 0;
 			}
 			else if (IsKeyDown(KEY_D))
 			{
-				pre_dx = 1;
-				pre_dy = 0;
+				G.pre_dx = 1;
+				G.pre_dy = 0;
 			}
 
-			if (pre_dx != -last_dx || pre_dy != -last_dy)			//禁止原地反向移动
+			if (G.pre_dx != -G.last_dx || G.pre_dy != -G.last_dy)			//禁止原地反向移动
 			{
-				dx = pre_dx;
-				dy = pre_dy;
+				G.dx = G.pre_dx;
+				G.dy = G.pre_dy;
 			}
 
-			left += dt;
+			G.left += G.dt;
 			for (int i = 0; i < 2; i++)         //移动
 			{
-				if (left >= 0.20)
+				if (G.left >= 0.20)
 				{
-					next_x = x + dx;
-					next_y = y + dy;
-					if (next_x <= gridnum_x && next_x >= 0 && next_y <= gridnum_y && next_y >= 0)//判断越界
+					next_x = G.x + G.dx;
+					next_y = G.y + G.dy;
+					if (next_x <= G.gridnum_x && next_x >= 0 && next_y <= G.gridnum_y && next_y >= 0)//判断越界
 					{
-						last_dx = dx;
-						last_dy = dy;
-						add = (oldest + body_length) % 2500;
-						x = next_x;
-						y = next_y;
-						body_x[add] = x;
-						body_y[add] = y;
-						body_length++;
+						G.last_dx = G.dx;
+						G.last_dy = G.dy;
+						add = (G.oldest + G.body_length) % 2500;
+						G.x = next_x;
+						G.y = next_y;
+						G.body_x[add] = G.x;
+						G.body_y[add] = G.y;
+						G.body_length++;
 
-						if (x != food_x || y != food_y)
+						if (G.x != G.food_x || G.y != G.food_y)
 						{
-							oldest = (oldest + 1) % 2500;
-							body_length--;
+							G.oldest = (G.oldest + 1) % 2500;
+							G.body_length--;
 						}
 						else {
-							int ok = 0;
-							int tries = 0;
-							while(!ok && tries < 100)
+							if (!Food(&G))
 							{
-								food_x = rand() % (gridnum_x + 1);							//生成新食物位置不能与蛇身重合
-								food_y = rand() % (gridnum_y + 1);
-								ok = 1;
-
-								for(int a = 0;a < body_length; a++)
-								{
-									if (body_x[(a + oldest) % 2500] == food_x && body_y[(a + oldest) % 2500] == food_y)
-									{
-										ok = 0;
-										break;
-									}
-								}
-								tries++;
-							}
-							if (!ok)
-							{
-								game = 2;
+								G.game = 2;
 							}
 						}
 
-						for (int c = 0; c < body_length - 1; c++)			//蛇头不能撞身体
+						for (int c = 0; c < G.body_length - 1; c++)			//蛇头不能撞身体
 						{
-							if (body_x[add] == body_x[(c + oldest) % 2500] && body_y[add] == body_y[(c + oldest) % 2500])
+							if (G.body_x[add] == G.body_x[(c + G.oldest) % 2500] && G.body_y[add] == G.body_y[(c + G.oldest) % 2500])
 							{
-								game = -1;
-								break;
+								G.game = -1;
+								break; 
 							}
 						}
 					}
 					else {
-						game = -1;
+						G.game = -1;
 						break;
 					}
-					left = left - 0.20;
+					G.left = G.left - 0.20;
 				}
 			}
 
-			for (int j = 0; j < body_length; j++)													 //绘制蛇身
+			for (int j = 0; j < G.body_length; j++)													 //绘制蛇身
 			{
-				DrawRectangle((int)(body_x[(oldest + j) % 2500] * gridLength), (int)(body_y[(oldest + j) % 2500] * gridLength), r, r, WHITE);
+				DrawRectangle((int)(G.body_x[(G.oldest + j) % 2500] * G.gridLength), (int)(G.body_y[(G.oldest + j) % 2500] * G.gridLength), G.gridLength, G.gridLength, WHITE);
 			}
-			DrawCircle(food_x * gridLength + gridLength / 2, food_y * gridLength + gridLength / 2, (float)(r / 5), YELLOW);//绘制食物
+			DrawCircle(G.food_x * G.gridLength + G.gridLength / 2, G.food_y * G.gridLength + G.gridLength / 2, (float)(G.gridLength / 5), YELLOW);//绘制食物
 			break;
-		case -1:
+		case -1:														//失败情况
 			text_w = MeasureText(gameover, 100);
 			text_x = GetScreenWidth() / 2 - text_w / 2;
 			text_y = GetScreenHeight() / 2 - 100 / 2;
@@ -206,40 +172,14 @@ int main()
 			text_x = GetScreenWidth() / 2 - text_w / 2;
 			text_y = (GetScreenHeight() / 2 - 50 / 2) + 100;
 			DrawText(rest, text_x, text_y, 50, WHITE);
-			if (IsKeyPressed(KEY_R))				//重开
+			
+			if (IsKeyDown (KEY_R))
 			{
-				game = 0;
-
-				x = 24;								//参数初始化
-				y = 24;
-
-				left = 0;
-
-				dx = 1;
-				dy = 0;
-
-				last_dx = 0;
-				last_dy = 0;
-
-				oldest = 0;
-				body_length = 1;
-				for (int k = oldest; k < body_length; k++)
-				{
-					body_x[k] = x - (body_length - 1 - k) * dx;
-					body_y[k] = y - (body_length - 1 - k) * dy;
-				}
-
-				food_x = rand() % (gridnum_x + 1);
-				food_y = rand() % (gridnum_y + 1);
-				while (food_x == x && food_y == y)
-				{
-					food_x = rand() % (gridnum_x + 1);
-					food_y = rand() % (gridnum_y + 1);
-				}
+				Restart(&G);
 			}
 			break;
-		case 2:
-			text_w = MeasureText(win, 200);
+		case 2:															//胜利情况
+			text_w = MeasureText(win, 200);					
 			text_x = GetScreenWidth() / 2 - text_w / 2;
 			text_y = GetScreenHeight() / 2 - 200 / 2;
 			DrawText(win, text_x, text_y, 200, YELLOW);
@@ -248,36 +188,10 @@ int main()
 			text_x = GetScreenWidth() / 2 - text_w / 2;
 			text_y = (GetScreenHeight() / 2 - 50 / 2) + 100;
 			DrawText(rest, text_x, text_y, 50, WHITE);
-			if (IsKeyPressed(KEY_R))				//重开
+
+			if (IsKeyDown(KEY_R))
 			{
-				game = 0;
-
-				x = 24;								//参数初始化
-				y = 24;
-
-				left = 0;
-
-				dx = 1;
-				dy = 0;
-
-				last_dx = 0;
-				last_dy = 0;
-
-				oldest = 0;
-				body_length = 1;
-				for (int k = oldest; k < body_length; k++)
-				{
-					body_x[k] = x - (body_length - 1 - k) * dx;
-					body_y[k] = y - (body_length - 1 - k) * dy;
-				}
-
-				food_x = rand() % (gridnum_x + 1);
-				food_y = rand() % (gridnum_y + 1);
-				while (food_x == x && food_y == y)
-				{
-					food_x = rand() % (gridnum_x + 1);
-					food_y = rand() % (gridnum_y + 1);
-				}
+				Restart(&G);
 			}
 			break;
 		}
@@ -286,4 +200,67 @@ int main()
 	CloseWindow();
 
 	return 0;
+}
+
+void Restart(struct Game *p)
+{
+	p->gridLength = 40;
+	p->gridnum_x = GetScreenWidth() / p->gridLength - 1;
+	p->gridnum_y = GetScreenHeight() / p->gridLength - 1;
+
+	p->x = p->gridnum_x / 2;
+	p->y = p->gridnum_y / 2;
+
+	p->left = 0;
+	
+	p->dx = 1;
+	p->dy = 0;
+	p->pre_dx = 1;
+	p->pre_dy = 0;
+	p->last_dx = 0;
+	p->last_dy = 0;
+
+	p->oldest = 0;
+	p->body_length = 1;
+
+	for (int i = 0; i < p->body_length;i++)
+	{
+		p->body_x[(i + p->oldest) % 2500] = p->x - (p->body_length - 1 - i) * p->dx;
+		p->body_y[(i + p->oldest) % 2500] = p->y - (p->body_length - 1 - i) * p->dy;
+	}
+
+	Food(p);
+
+	p->game = 0;
+
+}
+
+int Food(struct Game *p)
+{
+	int ok = 0;
+	int tries = 0;
+	while (!ok && tries < 100)
+	{
+		p->food_x = rand() % (p->gridnum_x + 1);							//生成新食物位置不能与蛇身重合
+		p->food_y = rand() % (p->gridnum_y + 1);
+		ok = 1;
+
+		for (int a = 0;a < p->body_length; a++)
+		{
+			if (p->body_x[(a + p->oldest) % 2500] == p->food_x && p->body_y[(a + p->oldest) % 2500] == p->food_y)
+			{
+				ok = 0;
+				break;
+			}
+		}
+		tries++;
+	}
+
+	if (ok)
+	{
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
