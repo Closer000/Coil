@@ -155,7 +155,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="snake V1.1.c" />
+    <ClCompile Include="Coil V1.1.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
