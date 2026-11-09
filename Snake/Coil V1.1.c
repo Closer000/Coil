@@ -1,4 +1,4 @@
-#include<stdio.h>
+
 #include<raylib.h>
 #include<math.h>
 #include<stdlib.h>
@@ -71,8 +71,6 @@ int main()
 			switch (G.menu)
 			{
 			case 0:
-				G.test = 0;
-				
 				text_w = MeasureText(title, 300);
 				text_x = GetScreenWidth() / 2 - text_w / 2;
 				text_y = 100;
@@ -84,6 +82,15 @@ int main()
 				}
 				break;
 			case 1:
+				if (G.test)
+				{
+					for (int i = 0;i <= G.gridnum_x + 1; i++)		//绘制测试用网格
+					{
+						DrawLine(i * G.gridLength, 0, i * G.gridLength, GetScreenHeight(), test);
+						DrawLine(0, i * G.gridLength, GetScreenWidth(), i * G.gridLength, test);
+					}
+				}
+				
 				text_w = MeasureText(options, 200);
 				text_x = GetScreenWidth() / 2 - text_w / 2;
 				text_y = 200;
@@ -101,33 +108,24 @@ int main()
 					}
 					G.menu = 1;
 				}
-				else if (TextButton("Back", GetScreenWidth() / 2, 50, 50, off, on))
+				if (TextButton("Back", GetScreenWidth() / 2, 50, 50, off, on))
 				{
 					G.menu = 0;
 				}
-				else if (TextButton("Easy", GetScreenWidth() / 2, text_y + 275, 50, off, on))
+				if (TextButton("Easy", GetScreenWidth() / 2, text_y + 275, 50, off, on))
 				{
 					target = 20;
 					G.menu = 2;
 				}
-				else if (TextButton("Normal", GetScreenWidth() / 2, text_y + 350, 50, off, on))
+				if (TextButton("Normal", GetScreenWidth() / 2, text_y + 350, 50, off, on))
 				{
 					target = 50;
 					G.menu = 2;
 				}
-				else if (TextButton("Hard", GetScreenWidth() / 2, text_y + 425, 50, off, on))
+				if (TextButton("Hard", GetScreenWidth() / 2, text_y + 425, 50, off, on))
 				{
 					target = 100;
 					G.menu = 2;
-				}
-				
-				if (G.test)
-				{
-					for (int i = 0;i <= G.gridnum_x + 1; i++)		//绘制测试用网格
-					{
-						DrawLine(i * G.gridLength, 0, i * G.gridLength, GetScreenHeight(), test);
-						DrawLine(0, i * G.gridLength, GetScreenWidth(), i * G.gridLength, test);
-					}
 				}
 				break;
 			case 2:
@@ -365,17 +363,18 @@ int Food(struct Game* p)
 int TextButton(const char* text, int mid_x, int mid_y, int fontsize, Color color1, Color color2)		//纯文本按钮
 {
 	int in;
+	int textwidth = MeasureText(text, fontsize);
 	Rectangle t = {
-		(float)(mid_x - MeasureText(text,fontsize) / 2),
-		(float)(mid_y - fontsize / 2),
-		(float)(MeasureText(text,fontsize) + 20),
+		(float)(mid_x - (textwidth + 20) / 2),
+		(float)(mid_y - (fontsize + 10) / 2),
+		(float)(textwidth + 20),
 		(float)(fontsize + 10)
 		};
-	DrawText(text, mid_x - MeasureText(text, fontsize) / 2, mid_y - fontsize / 2, fontsize, color1);
+	DrawText(text, mid_x - textwidth / 2, mid_y - fontsize / 2, fontsize, color1);
 	in = CheckCollisionPointRec(GetMousePosition(), t);
 	if (in)
 	{
-		DrawText(text, mid_x - MeasureText(text, fontsize) / 2, mid_y - fontsize / 2, fontsize, color2);
+		DrawText(text, mid_x - textwidth / 2, mid_y - fontsize / 2, fontsize, color2);
 	}
 	if (in && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
