@@ -15,4 +15,4 @@ if(MSVC)
   target_link_options(Coil PRIVATE /ENTRY:mainCRTStartup)
 endif()
 
-add_custom_command(TARGET Coil POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory assets $<TARGET_FILE_DIR:Coil> )
+add_custom_command(TARGET Coil POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:Coil> )
