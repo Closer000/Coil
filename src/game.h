@@ -1,6 +1,6 @@
-#pragma once;
+#pragma once
 
-struct Game
+typedef struct Game
 {
 	int x, y;								//定义x,y作为计算位置的临时变量
 	double left;							//消耗的时间
@@ -18,4 +18,4 @@ struct Game
 	int gridLength;							//格子边长
 	int score;								//得分
 	int test;								//网格
-}G;
+}Game;
