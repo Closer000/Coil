@@ -28,9 +28,6 @@ int main()
 	int text_x, text_y;						//文本位置
 	int text_w;								//文本宽度
 	double step = 0.10;						//步间隔
-	int target = 20;						//胜利条件
-	int num = 0;							//网格开关计数器
-	Color test = { 82,82,82,255 };			//网格颜色（测试用）
 	Color off = { 255,255,255,255 };		//未选取的按钮颜色
 	Color on = { 253,249,0,255 };			//被选取的按钮颜色
 	int add;								//追加位置
@@ -64,15 +61,8 @@ int main()
 				}
 				break;
 			case 1:
-				if (G.test)
-				{
-					for (int i = 0;i <= G.gridnum_x + 1; i++)		//绘制测试用网格
-					{
-						DrawLine(i * G.gridLength, 0, i * G.gridLength, GetScreenHeight(), test);
-						DrawLine(0, i * G.gridLength, GetScreenWidth(), i * G.gridLength, test);
-					}
-				}
 				
+				TestGrid_render(&G);
 				text_w = MeasureText(options, 200);
 				text_x = GetScreenWidth() / 2 - text_w / 2;
 				text_y = 200;
@@ -80,14 +70,7 @@ int main()
 				
 				if (TextButton("Grid On/Off", GetScreenWidth() / 2, GetScreenHeight() - 50, 50, off, on))
 				{
-					num++;
-					if (num % 2 == 0)
-					{
-						G.test = 0;
-					}
-					else {
-						G.test = 1;
-					}
+					G.test = !G.test;
 					G.menu = 1;
 				}
 				if (TextButton("Back", GetScreenWidth() / 2, 50, 50, off, on))
@@ -96,17 +79,17 @@ int main()
 				}
 				if (TextButton("Easy", GetScreenWidth() / 2, text_y + 275, 50, off, on))
 				{
-					target = 20;
+					G.target = 20;
 					G.menu = 2;
 				}
 				if (TextButton("Normal", GetScreenWidth() / 2, text_y + 350, 50, off, on))
 				{
-					target = 50;
+					G.target = 50;
 					G.menu = 2;
 				}
 				if (TextButton("Hard", GetScreenWidth() / 2, text_y + 425, 50, off, on))
 				{
-					target = 100;
+					G.target = 100;
 					G.menu = 2;
 				}
 				break;
@@ -193,9 +176,9 @@ int main()
 							G.body_length--;
 						}
 						else {
-							Food(&G);
+							Food_swapn(&G);
 							G.score++;
-							if (G.score >= target)
+							if (G.score >= G.target)
 							{
 								G.game = 2;
 							}
@@ -218,22 +201,11 @@ int main()
 				}
 			}
 
-			if (G.test)
-			{
-				for (int i = 0;i <= G.gridnum_x + 1; i++)		//绘制测试用网格
-				{
-					DrawLine(i * G.gridLength, 0, i * G.gridLength, GetScreenHeight(), test);
-					DrawLine(0, i * G.gridLength, GetScreenWidth(), i * G.gridLength, test);
-				}
-			}
-			
-			for (int j = 0; j < G.body_length; j++)													 //绘制蛇身
-			{
-				DrawRectangle((int)(G.body_x[(G.oldest + j) % 2500] * G.gridLength), (int)(G.body_y[(G.oldest + j) % 2500] * G.gridLength), G.gridLength, G.gridLength, WHITE);
-			}
-			DrawCircle(G.food_x * G.gridLength + G.gridLength / 2, G.food_y * G.gridLength + G.gridLength / 2, (float)(G.gridLength / 5), YELLOW);//绘制食物
-
-			DrawText(TextFormat("Score: %d / %d", G.score, target), 10, 10, 30, YELLOW);				//显示分数
+			TestGrid_render(&G); 
+			Body_render(&G);
+			Food_render(&G);
+			Score_render(&G);
+							
 			break;
 		case -1:														//失败情况
 			text_w = MeasureText(gameover, 100);
@@ -304,10 +276,11 @@ void Restart(struct Game* p)
 		p->body_y[(i + p->oldest) % 2500] = p->y - (p->body_length - 1 - i) * p->dy;
 	}
 
-	Food(p);
+	Food_swapn(p);
 
 	p->game = 0;
 
 	p->score = 0;
+	p->target = 0;
 }
 

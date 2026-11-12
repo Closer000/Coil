@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 find_package(raylib CONFIG REQUIRED)
 
-add_executable(Coil WIN32 "src/coil.c" "resources/Snake.rc" "src/food.c" "src/textbutton.c" "src/textbutton.h")
+add_executable(Coil WIN32 "src/coil.c" "resources/Snake.rc" "src/food.c" "src/textbutton.c" "src/render.c")
 
 target_link_libraries(Coil PRIVATE raylib)
 

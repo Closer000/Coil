@@ -1,3 +1,4 @@
+#pragma once
 #include "game.h"
 
-int Food(struct Game* p);
+int Food_swapn(struct Game* p);

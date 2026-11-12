@@ -18,4 +18,5 @@ typedef struct Game
 	int gridLength;							//格子边长
 	int score;								//得分
 	int test;								//网格
+	int target;								//胜利条件
 }Game;

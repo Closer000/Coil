@@ -1,7 +1,7 @@
 #include<stdlib.h>
 #include"game.h"
 
-int Food(struct Game* p)
+int Food_swapn(struct Game* p)
 {
 	int ok = 0;
 	int tries = 0;
