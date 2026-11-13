@@ -5,10 +5,10 @@
 #include<time.h>
 #include"game.h"
 #include"food.h"
+#include"state.h"
 
 Game G;
 
-void Restart(struct Game* p);
 int main()
 {
 	InitWindow(1000, 1000, "snake");
@@ -249,38 +249,5 @@ int main()
 	return 0;
 }
 
-void Restart(struct Game* p)
-{
-	p->gridLength = 20;
-	p->gridnum_x = GetScreenWidth() / p->gridLength - 1;
-	p->gridnum_y = GetScreenHeight() / p->gridLength - 1;
 
-	p->x = p->gridnum_x / 2;
-	p->y = p->gridnum_y / 2;
-
-	p->left = 0;
-
-	p->dx = 1;
-	p->dy = 0;
-	p->pre_dx = 1;
-	p->pre_dy = 0;
-	p->last_dx = 0;
-	p->last_dy = 0;
-
-	p->oldest = 0;
-	p->body_length = 1;
-
-	for (int i = 0; i < p->body_length;i++)
-	{
-		p->body_x[(i + p->oldest) % 2500] = p->x - (p->body_length - 1 - i) * p->dx;
-		p->body_y[(i + p->oldest) % 2500] = p->y - (p->body_length - 1 - i) * p->dy;
-	}
-
-	Food_swapn(p);
-
-	p->game = 0;
-
-	p->score = 0;
-	p->target = 0;
-}
 
