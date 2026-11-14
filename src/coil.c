@@ -1,4 +1,3 @@
-
 #include<raylib.h>
 #include<math.h>
 #include<stdlib.h>
@@ -10,6 +9,7 @@
 #include"textbutton.h"
 #include"render.h"
 #include"input.h"
+#include"menus.h"
 
 Game G;
 
@@ -20,18 +20,7 @@ int main()
 	SetWindowIcon(Icon);
 	UnloadImage(Icon);
 	SetTargetFPS(60);
-								
-	const char* gameover = "Game Over!";	//所需文本
-	const char* start = "Press Any Key to Start";
-	const char* rest = "Press R to Restart";
-	const char* win = "Win !";
-	const char* title = "Coil";
-	const char* options = "Options";
-	const char* grid = "Grid On";
-	int text_x, text_y;						//文本位置
-	int text_w;								//文本宽度
-	Color off = { 255,255,255,255 };		//未选取的按钮颜色
-	Color on = { 253,249,0,255 };			//被选取的按钮颜色
+						
 	srand((unsigned int)time(0));
 
 	Restart(&G);
@@ -45,114 +34,22 @@ int main()
 		switch (G.game)
 		{
 		case 0:
-			switch (G.menu)
-			{
-			case 0:
-				text_w = MeasureText(title, 300);
-				text_x = GetScreenWidth() / 2 - text_w / 2;
-				text_y = 100;
-				DrawText(title, text_x, text_y, 300, WHITE);
-
-				if (TextButton("Play", GetScreenWidth() / 2, GetScreenHeight() / 2, 50, off, on))
-				{
-					G.menu = 1;
-				}
-				break;
-			case 1:
-				
-				TestGrid_render(&G);
-				text_w = MeasureText(options, 200);
-				text_x = GetScreenWidth() / 2 - text_w / 2;
-				text_y = 200;
-				DrawText(options, text_x, text_y, 200, WHITE);
-				
-				if (TextButton("Grid On/Off", GetScreenWidth() / 2, GetScreenHeight() - 50, 50, off, on))
-				{
-					G.test = !G.test;
-					G.menu = 1;
-				}
-				if (TextButton("Back", GetScreenWidth() / 2, 50, 50, off, on))
-				{
-					G.menu = 0;
-				}
-				if (TextButton("Easy", GetScreenWidth() / 2, text_y + 275, 50, off, on))
-				{
-					G.target = 20;
-					G.menu = 2;
-				}
-				if (TextButton("Normal", GetScreenWidth() / 2, text_y + 350, 50, off, on))
-				{
-					G.target = 50;
-					G.menu = 2;
-				}
-				if (TextButton("Hard", GetScreenWidth() / 2, text_y + 425, 50, off, on))
-				{
-					G.target = 100;
-					G.menu = 2;
-				}
-				break;
-			case 2:
-				text_w = MeasureText(start, 50);
-				text_x = GetScreenWidth() / 2 - text_w / 2;
-				text_y = GetScreenHeight() / 2 - 50 / 2;
-				DrawText(start, text_x, text_y, 50, WHITE);
-				
-				if (TextButton("Back", GetScreenWidth() / 2, 50, 50, off, on))
-				{
-					G.menu = 1;
-				}
-				
-				if (GetKeyPressed())
-				{
-					G.game = 1;
-				}
-				break;
-			}
+			Beforstart(&G);
 			break;
 		case 1:
 			Clamp(&G);
 			Direction(&G);
 			Move(&G);
-
 			TestGrid_render(&G); 
 			Body_render(&G);
 			Food_render(&G);
-			Score_render(&G);
-							
+			Score_render(&G);		
 			break;
-		case -1:														//失败情况
-			text_w = MeasureText(gameover, 100);
-			text_x = GetScreenWidth() / 2 - text_w / 2;
-			text_y = GetScreenHeight() / 2 - 100 / 2;
-			DrawText(gameover, text_x, text_y, 100, RED);
-
-			text_w = MeasureText(rest, 50);
-			text_x = GetScreenWidth() / 2 - text_w / 2;
-			text_y = (GetScreenHeight() / 2 - 50 / 2) + 100;
-			DrawText(rest, text_x, text_y, 50, WHITE);
-
-			if (IsKeyDown(KEY_R))
-			{
-				Restart(&G);
-				G.menu = 2;
-			}
+		case -1:
+			Defete(&G);
 			break;
-		case 2:															//胜利情况
-			text_w = MeasureText(win, 200);
-			text_x = GetScreenWidth() / 2 - text_w / 2;
-			text_y = GetScreenHeight() / 2 - 200 / 2;
-			DrawText(win, text_x, text_y, 200, YELLOW);
-
-			text_w = MeasureText(rest, 50);
-			text_x = GetScreenWidth() / 2 - text_w / 2;
-			text_y = (GetScreenHeight() / 2 - 50 / 2) + 100;
-			DrawText(rest, text_x, text_y, 50, WHITE);
-
-			if (IsKeyDown(KEY_R))
-			{
-				Restart(&G);
-				G.menu = 2;
-			}
+		case 2:
+			Win(&G);
 			break;
 		}
 		EndDrawing();
@@ -161,6 +58,7 @@ int main()
 
 	return 0;
 }
+
 
 
 
