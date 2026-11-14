@@ -184,14 +184,7 @@ int main()
 							}
 						}
 
-						for (int c = 0; c < G.body_length - 1; c++)			//蛇头不能撞身体
-						{
-							if (G.body_x[add] == G.body_x[(c + G.oldest) % 2500] && G.body_y[add] == G.body_y[(c + G.oldest) % 2500])
-							{
-								G.game = -1;
-								break;
-							}
-						}
+						Selfcrash(&G, add);
 					}
 					else {
 						G.game = -1;
