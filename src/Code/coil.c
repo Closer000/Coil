@@ -34,7 +34,7 @@ int main()
 		switch (G.game)
 		{
 		case 0:
-			Beforstart(&G);
+			Beforestart(&G);
 			break;
 		case 1:
 			Clamp(&G);
@@ -46,7 +46,7 @@ int main()
 			Score_render(&G);		
 			break;
 		case -1:
-			Defete(&G);
+			Defeae(&G);
 			break;
 		case 2:
 			Win(&G);

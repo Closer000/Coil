@@ -18,7 +18,7 @@ static int text_y;
 Color off = { 255,255,255,255 };		//未选取的按钮颜色
 Color on = { 253,249,0,255 };			//被选取的按钮颜色
 
-void Beforstart(struct Game* g)
+void Beforestart(struct Game* g)
 {
 	switch (g->menu)
 	{
@@ -85,7 +85,7 @@ void Beforstart(struct Game* g)
 	}
 }
 
-void Defete(struct Game* g)		//失败情况
+void Defeae(struct Game* g)		//失败情况
 {
 	text_w = MeasureText(gameover, 100);
 	text_x = GetScreenWidth() / 2 - text_w / 2;
