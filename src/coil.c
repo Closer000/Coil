@@ -7,6 +7,8 @@
 #include"food.h"
 #include"restart.h"
 #include"rules.h"
+#include"textbutton.h"
+#include"render.h"
 
 Game G;
 
@@ -29,7 +31,6 @@ int main()
 	int text_w;								//文本宽度
 	Color off = { 255,255,255,255 };		//未选取的按钮颜色
 	Color on = { 253,249,0,255 };			//被选取的按钮颜色
-	int add;								//追加位置
 	srand((unsigned int)time(0));
 
 	Restart(&G);
@@ -140,47 +141,7 @@ int main()
 				G.dy = G.pre_dy;
 			}
 
-			G.left += G.dt;
-			for (int i = 0; i < 2; i++)         //移动
-			{
-				if (G.left >= G.step)
-				{
-					int next_x = G.x + G.dx;
-					int next_y = G.y + G.dy;
-					if (next_x <= G.gridnum_x && next_x >= 0 && next_y <= G.gridnum_y && next_y >= 0)//判断越界
-					{
-						G.last_dx = G.dx;
-						G.last_dy = G.dy;
-						add = (G.oldest + G.body_length) % 2500;
-						G.x = next_x;
-						G.y = next_y;
-						G.body_x[add] = G.x;
-						G.body_y[add] = G.y;
-						G.body_length++;
-
-						if (G.x != G.food_x || G.y != G.food_y)
-						{
-							G.oldest = (G.oldest + 1) % 2500;
-							G.body_length--;
-						}
-						else {
-							Food_swapn(&G);
-							G.score++;
-							if (G.score >= G.target)
-							{
-								G.game = 2;
-							}
-						}
-
-						Selfcrash(&G, add);
-					}
-					else {
-						G.game = -1;
-						break;
-					}
-					G.left = G.left - G.step;
-				}
-			}
+			Move(&G);
 
 			TestGrid_render(&G); 
 			Body_render(&G);

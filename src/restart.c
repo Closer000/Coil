@@ -34,4 +34,6 @@ void Restart(struct Game* p)
 	p->game = 0;
 
 	p->score = 0;
+
+	p->step = 0.10;
 }

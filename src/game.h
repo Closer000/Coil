@@ -5,6 +5,7 @@ typedef struct Game
 	int x, y;								//定义x,y作为计算位置的临时变量
 	double left;							//消耗的时间
 	double dt;								//上一帧耗时
+	double step;							//步间隔
 	int dx, dy;								//生效移动方向及移动量
 	int pre_dx, pre_dy;						//下一移动方向及移动量
 	int last_dx, last_dy;					//上一移动方向及移动量
@@ -19,5 +20,5 @@ typedef struct Game
 	int score;								//得分
 	int test;								//网格
 	int target;								//胜利条件
-	double step;							//步间隔
+	int add;								//追加位置
 }Game;
