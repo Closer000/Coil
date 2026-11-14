@@ -9,6 +9,7 @@
 #include"rules.h"
 #include"textbutton.h"
 #include"render.h"
+#include"input.h"
 
 Game G;
 
@@ -114,32 +115,7 @@ int main()
 		case 1:
 			Clamp(&G);
 
-			if (IsKeyDown(KEY_W))
-			{
-				G.pre_dx = 0;
-				G.pre_dy = -1;
-			}
-			else if (IsKeyDown(KEY_S))
-			{
-				G.pre_dx = 0;				//判定移动方向：(1,0)为向右一格，(-1,0)为向左一格，(0,-1)为向上一格，(0,1)向下一格
-				G.pre_dy = 1;
-			}
-			else if (IsKeyDown(KEY_A))
-			{
-				G.pre_dx = -1;
-				G.pre_dy = 0;
-			}
-			else if (IsKeyDown(KEY_D))
-			{
-				G.pre_dx = 1;
-				G.pre_dy = 0;
-			}
-
-			if (G.pre_dx != -G.last_dx || G.pre_dy != -G.last_dy)			//禁止原地反向移动
-			{
-				G.dx = G.pre_dx;
-				G.dy = G.pre_dy;
-			}
+			Direction(&G);
 
 			Move(&G);
 
