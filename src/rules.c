@@ -37,6 +37,11 @@ void Move(struct Game* g)
 	{
 		if (g->left >= g->step)
 		{
+			if (g->game == -1)
+			{
+				break;
+			}
+			
 			int next_x = g->x + g->dx;
 			int next_y = g->y + g->dy;
 			if (next_x <= g->gridnum_x && next_x >= 0 && next_y <= g->gridnum_y && next_y >= 0)//еп╤от╫╫Г
