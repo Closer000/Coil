@@ -19,4 +19,5 @@ typedef struct Game
 	int score;								//得分
 	int test;								//网格
 	int target;								//胜利条件
+	double step;							//步间隔
 }Game;

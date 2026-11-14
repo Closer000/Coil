@@ -5,7 +5,8 @@
 #include<time.h>
 #include"game.h"
 #include"food.h"
-#include"state.h"
+#include"restart.h"
+#include"rules.h"
 
 Game G;
 
@@ -16,8 +17,7 @@ int main()
 	SetWindowIcon(Icon);
 	UnloadImage(Icon);
 	SetTargetFPS(60);
-
-	int next_x, next_y;						//目标位置								
+								
 	const char* gameover = "Game Over!";	//所需文本
 	const char* start = "Press Any Key to Start";
 	const char* rest = "Press R to Restart";
@@ -27,7 +27,6 @@ int main()
 	const char* grid = "Grid On";
 	int text_x, text_y;						//文本位置
 	int text_w;								//文本宽度
-	double step = 0.10;						//步间隔
 	Color off = { 255,255,255,255 };		//未选取的按钮颜色
 	Color on = { 253,249,0,255 };			//被选取的按钮颜色
 	int add;								//追加位置
@@ -112,18 +111,7 @@ int main()
 			}
 			break;
 		case 1:
-
-
-
-			G.dt = GetFrameTime();											 //获取时间的帧改变量
-			if (G.dt >= 0.20)												 //钳制dt限制每帧位移
-			{
-				G.dt = 0.20;
-			}
-			else if (G.dt <= 0)
-			{
-				G.dt = 0;
-			}
+			Clamp(&G);
 
 			if (IsKeyDown(KEY_W))
 			{
@@ -155,10 +143,10 @@ int main()
 			G.left += G.dt;
 			for (int i = 0; i < 2; i++)         //移动
 			{
-				if (G.left >= step)
+				if (G.left >= G.step)
 				{
-					next_x = G.x + G.dx;
-					next_y = G.y + G.dy;
+					int next_x = G.x + G.dx;
+					int next_y = G.y + G.dy;
 					if (next_x <= G.gridnum_x && next_x >= 0 && next_y <= G.gridnum_y && next_y >= 0)//判断越界
 					{
 						G.last_dx = G.dx;
@@ -190,7 +178,7 @@ int main()
 						G.game = -1;
 						break;
 					}
-					G.left = G.left - step;
+					G.left = G.left - G.step;
 				}
 			}
 
