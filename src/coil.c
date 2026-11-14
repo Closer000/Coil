@@ -42,9 +42,6 @@ int main()
 		BeginDrawing();
 		ClearBackground(BLACK);
 
-		G.pre_dx = G.dx;
-		G.pre_dy = G.dy;
-
 		switch (G.game)
 		{
 		case 0:
@@ -114,9 +111,7 @@ int main()
 			break;
 		case 1:
 			Clamp(&G);
-
 			Direction(&G);
-
 			Move(&G);
 
 			TestGrid_render(&G); 
