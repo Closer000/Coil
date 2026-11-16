@@ -1,9 +1,9 @@
-#include<raylib.h>
+ï»¿#include<raylib.h>
 #include"game.h"
 #include"food.h"
 
 
- //ÉßÍ·²»ÄÜ×²ÉíÌå
+ //è›‡å¤´ä¸èƒ½æ’èº«ä½“
 void Selfcrash(struct Game* g)
 {
 	for (int c = 0; c < g->body_length - 1; c++)			
@@ -16,10 +16,10 @@ void Selfcrash(struct Game* g)
 	}
 }
 
-//Ç¯ÖÆdtÏŞÖÆÃ¿Ö¡Î»ÒÆ
+//é’³åˆ¶dté™åˆ¶æ¯å¸§ä½ç§»
 void Clamp(struct Game* g)
 {
-	g->dt = GetFrameTime();	//»ñÈ¡Ê±¼äµÄÖ¡¸Ä±äÁ¿									 
+	g->dt = GetFrameTime();	//è·å–æ—¶é—´çš„å¸§æ”¹å˜é‡									 
 	if (g->dt >= 0.20)												 
 	{
 		g->dt = 0.20;
@@ -33,7 +33,7 @@ void Clamp(struct Game* g)
 void Move(struct Game* g)
 {
 	g->left += g->dt;
-	for (int i = 0; i < 2; i++)         //ÒÆ¶¯
+	for (int i = 0; i < 2; i++)         //ç§»åŠ¨
 	{
 		if (g->left >= g->step)
 		{
@@ -44,7 +44,7 @@ void Move(struct Game* g)
 			
 			int next_x = g->x + g->dx;
 			int next_y = g->y + g->dy;
-			if (next_x <= g->gridnum_x && next_x >= 0 && next_y <= g->gridnum_y && next_y >= 0)//ÅĞ¶ÏÔ½½ç
+			if (next_x <= g->gridnum_x && next_x >= 0 && next_y <= g->gridnum_y && next_y >= 0)//åˆ¤æ–­è¶Šç•Œ
 			{
 				g->last_dx = g->dx;
 				g->last_dy = g->dy;

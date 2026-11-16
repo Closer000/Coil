@@ -1,4 +1,4 @@
-#include<raylib.h>
+﻿#include<raylib.h>
 #include"game.h"
 #include"food.h"
 

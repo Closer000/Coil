@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"game.h"
 
 void TestGrid_render(const Game*);

@@ -1,24 +1,24 @@
-#pragma once
+ï»¿#pragma once
 
 typedef struct Game
 {
-	int x, y;								//¶¨Òåx,y×÷Îª¼ÆËãÎ»ÖÃµÄÁÙÊ±±äÁ¿
-	double left;							//ÏûºÄµÄÊ±¼ä
-	double dt;								//ÉÏÒ»Ö¡ºÄÊ±
-	double step;							//²½¼ä¸ô
-	int dx, dy;								//ÉúĞ§ÒÆ¶¯·½Ïò¼°ÒÆ¶¯Á¿
-	int pre_dx, pre_dy;						//ÏÂÒ»ÒÆ¶¯·½Ïò¼°ÒÆ¶¯Á¿
-	int last_dx, last_dy;					//ÉÏÒ»ÒÆ¶¯·½Ïò¼°ÒÆ¶¯Á¿
-	int body_x[2500], body_y[2500];         //ÉßÉíÎ»ÖÃ
-	int body_length;						//ÉßÉí³¤¶È
-	int oldest;								//×î¾ÉÏÂ±ê
-	int food_x, food_y;						//Ê³ÎïµÄÎ»ÖÃ
-	int game;								//ÓÎÏ·×´Ì¬
-	int menu;								//ÓÎÏ·²Ëµ¥
-	int gridnum_x, gridnum_y;				//»»ËãÎª¸ñ×Ó×ø±êºóµÄ×î´óË÷Òı
-	int gridLength;							//¸ñ×Ó±ß³¤
-	int score;								//µÃ·Ö
-	int test;								//Íø¸ñ
-	int target;								//Ê¤ÀûÌõ¼ş
-	int add;								//×·¼ÓÎ»ÖÃ
+	int x, y;								//å®šä¹‰x,yä½œä¸ºè®¡ç®—ä½ç½®çš„ä¸´æ—¶å˜é‡
+	double left;							//æ¶ˆè€—çš„æ—¶é—´
+	double dt;								//ä¸Šä¸€å¸§è€—æ—¶
+	double step;							//æ­¥é—´éš”
+	int dx, dy;								//ç”Ÿæ•ˆç§»åŠ¨æ–¹å‘åŠç§»åŠ¨é‡
+	int pre_dx, pre_dy;						//ä¸‹ä¸€ç§»åŠ¨æ–¹å‘åŠç§»åŠ¨é‡
+	int last_dx, last_dy;					//ä¸Šä¸€ç§»åŠ¨æ–¹å‘åŠç§»åŠ¨é‡
+	int body_x[2500], body_y[2500];         //è›‡èº«ä½ç½®
+	int body_length;						//è›‡èº«é•¿åº¦
+	int oldest;								//æœ€æ—§ä¸‹æ ‡
+	int food_x, food_y;						//é£Ÿç‰©çš„ä½ç½®
+	int game;								//æ¸¸æˆçŠ¶æ€
+	int menu;								//æ¸¸æˆèœå•
+	int gridnum_x, gridnum_y;				//æ¢ç®—ä¸ºæ ¼å­åæ ‡åçš„æœ€å¤§ç´¢å¼•
+	int gridLength;							//æ ¼å­è¾¹é•¿
+	int score;								//å¾—åˆ†
+	int test;								//ç½‘æ ¼
+	int target;								//èƒœåˆ©æ¡ä»¶
+	int add;								//è¿½åŠ ä½ç½®
 }Game;

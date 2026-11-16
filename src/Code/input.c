@@ -1,7 +1,7 @@
-#include<raylib.h>
+ï»¿#include<raylib.h>
 #include"game.h"
 
-//ÅÐ¶¨ÒÆ¶¯·½Ïò£º(1,0)ÎªÏòÓÒÒ»¸ñ£¬(-1,0)ÎªÏò×óÒ»¸ñ£¬(0,-1)ÎªÏòÉÏÒ»¸ñ£¬(0,1)ÏòÏÂÒ»¸ñ
+//åˆ¤å®šç§»åŠ¨æ–¹å‘ï¼š(1,0)ä¸ºå‘å³ä¸€æ ¼ï¼Œ(-1,0)ä¸ºå‘å·¦ä¸€æ ¼ï¼Œ(0,-1)ä¸ºå‘ä¸Šä¸€æ ¼ï¼Œ(0,1)å‘ä¸‹ä¸€æ ¼
 void Direction(struct Game* g)
 {
 	if (IsKeyDown(KEY_W))
@@ -25,7 +25,7 @@ void Direction(struct Game* g)
 		g->pre_dy = 0;
 	}
 	
-	//½ûÖ¹Ô­µØ·´ÏòÒÆ¶¯
+	//ç¦æ­¢åŽŸåœ°åå‘ç§»åŠ¨
 	if (g->pre_dx != -g->last_dx || g->pre_dy != -g->last_dy)
 	{
 		g->dx = g->pre_dx;

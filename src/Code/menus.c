@@ -1,10 +1,10 @@
-#include<raylib.h>
+ï»¿#include<raylib.h>
 #include"game.h"
 #include"render.h"
 #include"textbutton.h"
 #include"restart.h"
 
-//ËùĞèÎÄ±¾
+//æ‰€éœ€æ–‡æœ¬
 static const char* gameover = "Game Over!";	
 static const char* start = "Press Any Key to Start";
 static const char* rest = "Press R to Restart";
@@ -15,8 +15,8 @@ static const char* grid = "Grid On";
 static int text_w;
 static int text_x;
 static int text_y;
-Color off = { 255,255,255,255 };		//Î´Ñ¡È¡µÄ°´Å¥ÑÕÉ«
-Color on = { 253,249,0,255 };			//±»Ñ¡È¡µÄ°´Å¥ÑÕÉ«
+Color off = { 255,255,255,255 };		//æœªé€‰å–çš„æŒ‰é’®é¢œè‰²
+Color on = { 253,249,0,255 };			//è¢«é€‰å–çš„æŒ‰é’®é¢œè‰²
 
 void Beforestart(struct Game* g)
 {
@@ -85,7 +85,7 @@ void Beforestart(struct Game* g)
 	}
 }
 
-void Defeae(struct Game* g)		//Ê§°ÜÇé¿ö
+void Defeae(struct Game* g)		//å¤±è´¥æƒ…å†µ
 {
 	text_w = MeasureText(gameover, 100);
 	text_x = GetScreenWidth() / 2 - text_w / 2;
@@ -104,7 +104,7 @@ void Defeae(struct Game* g)		//Ê§°ÜÇé¿ö
 	}
 }
 
-void Win(struct Game* g)		//Ê¤ÀûÇé¿ö
+void Win(struct Game* g)		//èƒœåˆ©æƒ…å†µ
 {
 	text_w = MeasureText(win, 200);
 	text_x = GetScreenWidth() / 2 - text_w / 2;

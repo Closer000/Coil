@@ -1,4 +1,4 @@
-#include<stdlib.h>
+ï»¿#include<stdlib.h>
 #include"game.h"
 
 int Food_swapn(struct Game* p)
@@ -7,7 +7,7 @@ int Food_swapn(struct Game* p)
 	int tries = 0;
 	while (!ok && tries < 100)
 	{
-		p->food_x = rand() % (p->gridnum_x + 1);							//Éú³ÉÐÂÊ³ÎïÎ»ÖÃ²»ÄÜÓëÉßÉíÖØºÏ
+		p->food_x = rand() % (p->gridnum_x + 1);							//ç”Ÿæˆæ–°é£Ÿç‰©ä½ç½®ä¸èƒ½ä¸Žè›‡èº«é‡åˆ
 		p->food_y = rand() % (p->gridnum_y + 1);
 		ok = 1;
 

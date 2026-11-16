@@ -13,6 +13,7 @@ target_link_libraries(Coil PRIVATE raylib)
 
 if(MSVC)
   target_link_options(Coil PRIVATE /ENTRY:mainCRTStartup)
+  target_compile_options(Coil PRIVATE /utf-8)
   target_include_directories(Coil PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/Head")
 endif()
 

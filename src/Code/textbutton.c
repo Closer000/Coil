@@ -1,6 +1,6 @@
-#include<Raylib.h>
+ï»¿#include<Raylib.h>
 
-int TextButton(const char* text, int mid_x, int mid_y, int fontsize, Color color1, Color color2)		//´¿ÎÄ±¾°´Å¥
+int TextButton(const char* text, int mid_x, int mid_y, int fontsize, Color color1, Color color2)		//çº¯æ–‡æœ¬æŒ‰é’®
 {
 	int in;
 	int textwidth = MeasureText(text, fontsize);

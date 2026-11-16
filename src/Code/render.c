@@ -1,13 +1,13 @@
-#include<raylib.h>
+ï»¿#include<raylib.h>
 #include"game.h"
 
-static const Color color_grid = { 82,82,82,255 };			//Íø¸ñÑÕÉ«£¨²âÊÔÓÃ£©
+static const Color color_grid = { 82,82,82,255 };			//ç½‘æ ¼é¢œè‰²ï¼ˆæµ‹è¯•ç”¨ï¼‰
 
 void TestGrid_render(const Game*g)
 {
 	if (g->test)
 	{
-		for (int i = 0;i <= g->gridnum_x + 1; i++)		//»æÖÆ²âÊÔÓÃÍø¸ñ
+		for (int i = 0;i <= g->gridnum_x + 1; i++)		//ç»˜åˆ¶æµ‹è¯•ç”¨ç½‘æ ¼
 		{
 			DrawLine(i * g->gridLength, 0, i * g->gridLength, GetScreenHeight(), color_grid);
 			DrawLine(0, i * g->gridLength, GetScreenWidth(), i * g->gridLength, color_grid);
@@ -17,7 +17,7 @@ void TestGrid_render(const Game*g)
 
 void Body_render(const Game* g)
 {
-	for (int j = 0; j < g->body_length; j++)													 //»æÖÆÉßÉí
+	for (int j = 0; j < g->body_length; j++)													 //ç»˜åˆ¶è›‡èº«
 	{
 		DrawRectangle((int)(g->body_x[(g->oldest + j) % 2500] * g->gridLength), (int)(g->body_y[(g->oldest + j) % 2500] * g->gridLength), g->gridLength, g->gridLength, WHITE);
 	}
@@ -25,10 +25,10 @@ void Body_render(const Game* g)
 
 void Food_render(const Game* g)
 {
-	DrawCircle(g->food_x * g->gridLength + g->gridLength / 2, g->food_y * g->gridLength + g->gridLength / 2, (float)(g->gridLength / 5), YELLOW);//»æÖÆÊ³Îï
+	DrawCircle(g->food_x * g->gridLength + g->gridLength / 2, g->food_y * g->gridLength + g->gridLength / 2, (float)(g->gridLength / 5), YELLOW);//ç»˜åˆ¶é£Ÿç‰©
 }
 
 void Score_render(const Game* g)
 {
-	DrawText(TextFormat("Score: %d / %d", g->score, g->target), 10, 10, 30, YELLOW); //ÏÔÊ¾·ÖÊı
+	DrawText(TextFormat("Score: %d / %d", g->score, g->target), 10, 10, 30, YELLOW); //æ˜¾ç¤ºåˆ†æ•°
 }
