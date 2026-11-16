@@ -79,3 +79,4 @@ MIT. See [LICENSE](LICENSE).
 
 - [raylib](https://www.raylib.com/) - simple and easy-to-use game programming library
 - [vcpkg](https://vcpkg.io/) - C/C++ package manager
+- [DeepSeek](https://www.deepseek.com/) (DeepSeek-v4.1-Flash) - AI coding assistant used during development
