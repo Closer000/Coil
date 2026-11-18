@@ -1,8 +1,8 @@
-
+ï»¿
 
 # Coil: A minimalist grid-based snake game built with raylib and C
 
-[¼òÌåÖĞÎÄ](READNE_cn.md) | English
+[ç®€ä½“ä¸­æ–‡](README.zh-CN.md) | English
 
 ![start](docs/start.png)
 ![playing](docs/playing.png)
