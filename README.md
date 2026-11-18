@@ -1,4 +1,11 @@
+
+
 # Coil: A minimalist grid-based snake game built with raylib and C
+
+[¼òÌåÖÐÎÄ](READNE_cn.md) | English
+
+![start](docs/start.png)
+![playing](docs/playing.png)
 
 ## About:
 
@@ -10,12 +17,18 @@ It is built as a learning project: plain C11, raylib for windowing and rendering
 
 ## Features:
 
+![showgrid](docs/showgrid.gif)
+
 - Grid-based movement with frame-rate independent stepping
 - Three difficulty presets (target score 20 / 50 / 100)
 - Real-time score display
 - Win and game-over screens with instant restart
 - Optional test grid overlay for debugging
 - Custom window icon; assets are bundled with the build
+
+
+![win](docs/win.png)
+![gameover](docs/gameover.png)
 
 ## Controls:
 

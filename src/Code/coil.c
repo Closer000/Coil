@@ -1,4 +1,4 @@
-﻿#include<raylib.h>
+#include<raylib.h>
 #include<math.h>
 #include<stdlib.h>
 #include<time.h>
@@ -15,7 +15,7 @@ Game G;
 
 int main()
 {
-	InitWindow(1000, 1000, "snake");
+	InitWindow(1000, 1000, "Coil");
 	Image Icon = LoadImage("SnakeIcon.png");
 	SetWindowIcon(Icon);
 	UnloadImage(Icon);
