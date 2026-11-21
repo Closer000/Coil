@@ -1,7 +1,7 @@
 ﻿#include<raylib.h>
 #include"game.h"
 #include"food.h"
-
+#include"sound.h"
 
  //蛇头不能撞身体
 void Selfcrash(struct Game* g)
@@ -11,6 +11,7 @@ void Selfcrash(struct Game* g)
 		if (g->body_x[g->add] == g->body_x[(c + g->oldest) % 2500] && g->body_y[g->add] == g->body_y[(c + g->oldest) % 2500])
 		{
 			g->game = -1;
+			PlaySound(die);
 			break;
 		}
 	}
@@ -61,10 +62,12 @@ void Move(struct Game* g)
 					g->body_length--;
 				}
 				else {
+					PlaySound(eat);
 					Food_swapn(g);
 					g->score++;
 					if (g->score >= g->target)
 					{
+						PlaySound(victory);
 						g->game = 2;
 					}
 				}
@@ -72,6 +75,7 @@ void Move(struct Game* g)
 			}
 			else {
 				g->game = -1;
+				PlaySound(die);
 				break;
 			}
 			g->left = g->left - g->step;

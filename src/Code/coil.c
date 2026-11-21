@@ -1,4 +1,4 @@
-#include<raylib.h>
+﻿#include<raylib.h>
 #include<math.h>
 #include<stdlib.h>
 #include<time.h>
@@ -10,12 +10,15 @@
 #include"render.h"
 #include"input.h"
 #include"menus.h"
+#include"sound.h"
 
 Game G;
 
 int main()
 {
 	InitWindow(1000, 1000, "Coil");
+	InitAudioDevice();
+	Init_sound();
 	Image Icon = LoadImage("SnakeIcon.png");
 	SetWindowIcon(Icon);
 	UnloadImage(Icon);
@@ -54,6 +57,8 @@ int main()
 		}
 		EndDrawing();
 	}
+	Close_sound();
+	CloseAudioDevice();
 	CloseWindow();
 
 	return 0;
